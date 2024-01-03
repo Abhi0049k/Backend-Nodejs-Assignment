@@ -11,7 +11,59 @@ datasource db {
 }
 
 model User {
-  id       String @id @default(uuid())
-  email    String @unique
+  id       String     @id @default(uuid())
+  name     String
+  email    String     @unique
   password String
+  role     String
+  isDelete Boolean    @default(false)
+  Table    Table[]
+  Employee Employee[]
+  Payment  Payment[]
+}
+
+model Restaurant {
+  id          String     @id @default(uuid())
+  name        String
+  description String
+  Table       Table[]
+  Employee    Employee[]
+  Item        Item[]
+  Payment     Payment[]
+}
+
+model Table {
+  id           String     @id @default(uuid())
+  restaurant   Restaurant @relation(fields: [restaurantId], references: [id])
+  restaurantId String
+  customer     User       @relation(fields: [customerId], references: [id])
+  customerId   String
+  isBooked     Boolean
+}
+
+model Employee {
+  id           String     @id @default(uuid())
+  user         User       @relation(fields: [userId], references: [id])
+  restaurant   Restaurant @relation(fields: [restaurantId], references: [id])
+  userId       String
+  restaurantId String
+}
+
+model Item {
+  id           String     @id @default(uuid())
+  restaurant   Restaurant @relation(fields: [restaurantId], references: [id])
+  name         String
+  description  String
+  price        Int
+  isDelete     Boolean    @default(false)
+  restaurantId String
+}
+
+model Payment {
+  id           String     @id @default(uuid())
+  restaurant   Restaurant @relation(fields: [restaurantId], references: [id])
+  user         User       @relation(fields: [userId], references: [id])
+  restaurantId String
+  userId       String
+  price        Int
 }
