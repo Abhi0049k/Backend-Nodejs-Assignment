@@ -36,8 +36,8 @@ model Table {
   id           String     @id @default(uuid())
   restaurant   Restaurant @relation(fields: [restaurantId], references: [id])
   restaurantId String
-  customer     User       @relation(fields: [customerId], references: [id])
-  customerId   String
+  customer     User?      @relation(fields: [customerId], references: [id])
+  customerId   String?
   isBooked     Boolean
 }
 
